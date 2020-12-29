@@ -6,7 +6,6 @@ import {
   Grid,
   Typography,
 } from "@material-ui/core";
-import { withRouter } from "react-router-dom";
 import "./style/Details.css";
 import { makeStyles } from "@material-ui/core/styles";
 

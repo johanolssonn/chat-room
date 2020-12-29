@@ -9,7 +9,7 @@ import {
   Badge,
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-import SocketClient from "../clients/socket-client";
+import SocketClient from "../../clients/socket-client";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
@@ -18,6 +18,7 @@ import Webcam from "react-webcam";
 import CancelIcon from "@material-ui/icons/Cancel";
 import CheckIcon from "@material-ui/icons/Check";
 import UndoIcon from "@material-ui/icons/Undo";
+import ConfirmPhotoDialog from "./UnconfirmedPhotoDialog";
 
 const DEFAULT_IMAGE_LINK =
   "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
@@ -46,7 +47,7 @@ const useStyles = makeStyles({
   icon: {
     color: "white",
   },
-  checkIcon: {
+  checkIcon: {  
     color: "green",
   },
   undoIcon: {
@@ -67,6 +68,9 @@ const Join = () => {
   const [hasConfirmedPhoto, setHasConfirmedPhoto] = useState(false);
   const [isJoinDisabled, setIsJoinDisabled] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isConfirmPhotoDialogOpen, setIsConfirmPhotoDialogOpen] = useState(
+    false
+  );
   const history = useHistory();
   const classes = useStyles();
   const webcamRef = useRef(null);
@@ -78,7 +82,24 @@ const Join = () => {
   }, [webcamRef, setTakenImage]);
 
   const onJoinClick = () => {
-    SocketClient.connect(name, finalImage);
+    if (hasTakenPhoto && !hasConfirmedPhoto) {
+      setIsConfirmPhotoDialogOpen(true);
+    } else {
+      SocketClient.connect(name, finalImage);
+      history.push("/room");
+    }
+  };
+
+  const onYesClick = () => {
+    setIsConfirmPhotoDialogOpen(false);
+    // TODO: should set finalImage and call a join function
+    SocketClient.connect(name, takenImage); 
+    history.push("/room");
+  };
+
+  const onNoClick = () => {
+    setIsConfirmPhotoDialogOpen(false);
+    SocketClient.connect(name, finalImage); 
     history.push("/room");
   };
 
@@ -141,8 +162,12 @@ const Join = () => {
               />
             </Badge>
           </Grid>
-          <Dialog aria-labelledby="simple-dialog-title" open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
-            <DialogTitle className={classes.dialog} id="simple-dialog-title">
+          <Dialog
+            aria-labelledby="simple-dialog-title"
+            open={isDialogOpen}
+            onClose={() => setIsDialogOpen(false)}
+          >
+            <DialogTitle className={classes.dialog}>
               Take profile picture
             </DialogTitle>
             <Grid className={classes.dialog} container direction="column">
@@ -196,6 +221,12 @@ const Join = () => {
             >
               Join
             </Button>
+            <ConfirmPhotoDialog
+              isConfirmPhotoDialogOpen={isConfirmPhotoDialogOpen}
+              image={takenImage}
+              handleYesClick={onYesClick}
+              handleNoClick={onNoClick}
+            ></ConfirmPhotoDialog>
           </Grid>
         </Grid>
       </Card>

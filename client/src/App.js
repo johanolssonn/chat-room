@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import Join from "./components/Join";
+import Join from "./components/join/Join";
 import Room from "./components/Room";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 

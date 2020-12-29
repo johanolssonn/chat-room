@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Divider, Grid, Paper } from "@material-ui/core";
-import { withRouter } from "react-router-dom";
 import SocketClient from "../../clients/socket-client";
 import { makeStyles } from "@material-ui/core/styles";
 import MessageWindow from "./MessageWindow";
