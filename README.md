@@ -1,3 +1,3 @@
 ## Chat room
 
-A simple chat room made with socket.io and React. 💬
+A simple chat room made with Socket.IO and React. 💬
