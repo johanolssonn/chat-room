@@ -18,7 +18,7 @@ import Webcam from "react-webcam";
 import CancelIcon from "@material-ui/icons/Cancel";
 import CheckIcon from "@material-ui/icons/Check";
 import UndoIcon from "@material-ui/icons/Undo";
-import ConfirmPhotoDialog from "./UnconfirmedPhotoDialog";
+import ConfirmPhotoDialog from "./ConfirmPhotoDialog";
 
 const DEFAULT_IMAGE_LINK =
   "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
