@@ -4,8 +4,6 @@ import {
   TextField,
   Grid,
   Card,
-  Dialog,
-  DialogTitle,
   Badge,
 } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
@@ -13,12 +11,9 @@ import SocketClient from "../../clients/socket-client";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
-import PhotoCameraIcon from "@material-ui/icons/PhotoCamera";
-import Webcam from "react-webcam";
-import CancelIcon from "@material-ui/icons/Cancel";
 import CheckIcon from "@material-ui/icons/Check";
-import UndoIcon from "@material-ui/icons/Undo";
 import ConfirmPhotoDialog from "./ConfirmPhotoDialog";
+import TakePhotoDialog from "./TakePhotoDialog";
 
 const DEFAULT_IMAGE_LINK =
   "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
@@ -39,19 +34,6 @@ const useStyles = makeStyles({
   },
   whiteText: {
     color: "white",
-  },
-  dialog: {
-    color: "white",
-    backgroundColor: "#29364f",
-  },
-  icon: {
-    color: "white",
-  },
-  checkIcon: {  
-    color: "green",
-  },
-  undoIcon: {
-    color: "red",
   },
   badge: {
     backgroundColor: "#00BC17",
@@ -93,13 +75,13 @@ const Join = () => {
   const onYesClick = () => {
     setIsConfirmPhotoDialogOpen(false);
     // TODO: should set finalImage and call a join function
-    SocketClient.connect(name, takenImage); 
+    SocketClient.connect(name, takenImage);
     history.push("/room");
   };
 
   const onNoClick = () => {
     setIsConfirmPhotoDialogOpen(false);
-    SocketClient.connect(name, finalImage); 
+    SocketClient.connect(name, finalImage);
     history.push("/room");
   };
 
@@ -162,55 +144,16 @@ const Join = () => {
               />
             </Badge>
           </Grid>
-          <Dialog
-            aria-labelledby="simple-dialog-title"
-            open={isDialogOpen}
-            onClose={() => setIsDialogOpen(false)}
-          >
-            <DialogTitle className={classes.dialog}>
-              Take profile picture
-            </DialogTitle>
-            <Grid className={classes.dialog} container direction="column">
-              <Grid item>
-                {hasTakenPhoto ? (
-                  <img src={takenImage} />
-                ) : (
-                  <Webcam
-                    audio={false}
-                    ref={webcamRef}
-                    screenshotFormat="image/jpeg"
-                  />
-                )}
-              </Grid>
-              <Grid style={{ margin: 8 }} container direction="row">
-                <Grid item>
-                  <Button onClick={() => setIsDialogOpen(false)}>
-                    {<CancelIcon className={classes.icon} />}
-                  </Button>
-                </Grid>
-                {hasTakenPhoto ? (
-                  <Grid item>
-                    <Button onClick={confirm}>
-                      {<CheckIcon className={classes.checkIcon} />}
-                    </Button>
-                    <Button onClick={undo}>
-                      {<UndoIcon className={classes.undoIcon} />}
-                    </Button>
-                  </Grid>
-                ) : (
-                  <Grid item>
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      onClick={capture}
-                    >
-                      {<PhotoCameraIcon className={classes.icon} />}
-                    </Button>
-                  </Grid>
-                )}
-              </Grid>
-            </Grid>
-          </Dialog>
+          <TakePhotoDialog
+            webcamRef={webcamRef}
+            takenImage={takenImage}
+            hasTakenPhoto={hasTakenPhoto}
+            isDialogOpen={isDialogOpen}
+            handleCapture={capture}
+            handleUndo={undo}
+            handleConfirmation={confirm}
+            handleClose={() => setIsDialogOpen(false)}
+          ></TakePhotoDialog>
           <Grid item>
             <Button
               size="small"
