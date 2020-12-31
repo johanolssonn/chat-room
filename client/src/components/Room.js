@@ -2,10 +2,12 @@ import Chat from "./chat/Chat";
 import Details from "./Details";
 
 import React, { useEffect, useState } from "react";
-import { Divider, Grid, Paper } from "@material-ui/core";
-import { withRouter } from "react-router-dom";
+import { Divider, Grid, Paper, Tooltip } from "@material-ui/core";
+import { withRouter, useHistory } from "react-router-dom";
 import SocketClient from "../clients/socket-client";
 import { makeStyles } from "@material-ui/core/styles";
+import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
+import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles({
   paper: {
@@ -17,12 +19,18 @@ const useStyles = makeStyles({
 const Room = () => {
   const [activeChatters, setActiveChatters] = useState([]);
   const classes = useStyles();
+  const history = useHistory();
 
   useEffect(() => {
     SocketClient.on("active", (data) => {
       setActiveChatters(data);
     });
   }, [activeChatters]);
+
+  const onDisconnect = () => {
+    SocketClient.disconnect();
+    history.goBack();
+  };
 
   return (
     <Grid container direction="column" justify="center" alignItems="center">
@@ -37,6 +45,13 @@ const Room = () => {
             </Grid>
             <Grid item>
               <Chat />
+            </Grid>
+            <Grid item>
+            <Tooltip title="Disconnect">
+              <IconButton color="primary" onClick={() => onDisconnect()}>
+                <CloseOutlinedIcon />
+              </IconButton>
+            </Tooltip>
             </Grid>
           </Grid>
         </Paper>

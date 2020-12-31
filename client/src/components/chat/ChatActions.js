@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import { Button, TextField, Grid, Tooltip } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
+import { Button, TextField, Grid } from "@material-ui/core";
 import SocketClient from "../../clients/socket-client";
 
 import SendIcon from "@material-ui/icons/Send";
-import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 import { makeStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
 
 const useStyles = makeStyles({
   outerPaper: {
@@ -56,7 +53,6 @@ const ChatActions = () => {
   const [currentMessage, setCurrentMessage] = useState("");
   const [isSendDisabled, setIsSendDisabled] = useState(true);
   const classes = useStyles();
-  const history = useHistory();
 
   const onWriteMessage = (textInput) => {
     if (textInput.trim().length === 0) {
@@ -83,20 +79,8 @@ const ChatActions = () => {
     setCurrentMessage("");
   };
 
-  const onDisconnect = () => {
-    SocketClient.disconnect();
-    history.goBack();
-  };
-
   return (
     <Grid justify="center" container spacing={8}>
-      <Grid item>
-        <Tooltip title="Disconnect">
-          <IconButton color="primary" onClick={() => onDisconnect()}>
-            <CloseOutlinedIcon />
-          </IconButton>
-        </Tooltip>
-      </Grid>
       <Grid item>
         <TextField
           onKeyDown={onKeyDown}
