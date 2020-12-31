@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 import getenv from "getenv";
 
-const HOST_URL = getenv("REACT_APP_HOST_IP", "");
+const HOST_URL = getenv("REACT_APP_HOST_URL", "");
 
 export default class SocketClient {
   socket;
