@@ -14,9 +14,7 @@ import AddAPhotoIcon from "@material-ui/icons/AddAPhoto";
 import CheckIcon from "@material-ui/icons/Check";
 import ConfirmPhotoDialog from "./ConfirmPhotoDialog";
 import TakePhotoDialog from "./TakePhotoDialog";
-
-const DEFAULT_IMAGE_LINK =
-  "https://cdn.business2community.com/wp-content/uploads/2017/08/blank-profile-picture-973460_640.png";
+import defaultProfileImage from '../../assets/profile.png';
 
 const useStyles = makeStyles({
   card: {
@@ -45,7 +43,7 @@ const useStyles = makeStyles({
 const Join = () => {
   const [name, setName] = useState("");
   const [takenImage, setTakenImage] = useState("");
-  const [finalImage, setFinalImage] = useState(DEFAULT_IMAGE_LINK);
+  const [finalImage, setFinalImage] = useState(defaultProfileImage);
   const [hasTakenPhoto, setHasTakenPhoto] = useState(false);
   const [hasConfirmedPhoto, setHasConfirmedPhoto] = useState(false);
   const [isJoinDisabled, setIsJoinDisabled] = useState(true);
@@ -101,7 +99,7 @@ const Join = () => {
   };
 
   const undo = () => {
-    setFinalImage(DEFAULT_IMAGE_LINK);
+    setFinalImage(defaultProfileImage);
     setHasConfirmedPhoto(false);
     setHasTakenPhoto(false);
   };
