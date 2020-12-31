@@ -140,7 +140,7 @@ const Join = () => {
               <AddAPhotoIcon
                 onClick={onAddImage}
                 className={classes.addImage}
-                fontSize="medium"
+                fontSize="default"
               />
             </Badge>
           </Grid>

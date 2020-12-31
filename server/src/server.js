@@ -23,7 +23,7 @@ io.on("connection", (socket) => {
   })
 
   socket.on("chat", (data) => {
-    console.log(data.name)
+    console.log(`${data.name} sent a message.`)
     io.sockets.emit("chat", data);
   });
 

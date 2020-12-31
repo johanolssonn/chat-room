@@ -4,6 +4,7 @@ import SocketClient from "../../clients/socket-client";
 import { makeStyles } from "@material-ui/core/styles";
 import MessageWindow from "./MessageWindow";
 import ChatActions from "./ChatActions";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
   outerPaper: {
@@ -23,44 +24,49 @@ const Chat = () => {
   const [messagesWithSenders, setMessagesWithSenders] = useState([]);
   const [feedback, setFeedback] = useState("");
   const classes = useStyles();
+  const history = useHistory();
 
   useEffect(() => {
     window.onbeforeunload = () => {
       SocketClient.disconnect();
     };
 
-    SocketClient.on("chat", (data) => {
-      setMessagesWithSenders((messages) => messages.concat(data));
-      setFeedback("");
-    });
+    try {
+      SocketClient.on("chat", (data) => {
+        setMessagesWithSenders((messages) => messages.concat(data));
+        setFeedback("");
+      });
 
-    SocketClient.on("typing", (data) => {
-      setFeedback(`${data} is typing...`);
-    });
+      SocketClient.on("typing", (data) => {
+        setFeedback(`${data} is typing...`);
+      });
 
-    SocketClient.on("stoppedtyping", () => {
-      setFeedback('');
-    });
+      SocketClient.on("stoppedtyping", () => {
+        setFeedback("");
+      });
 
-    SocketClient.on("join", (data) => {
-      console.log("joined:", data.name);
-      setMessagesWithSenders((messages) =>
-        messages.concat({
-          name: `${data.name} joined the room.`,
-          image: data.image,
-        })
-      );
-    });
+      SocketClient.on("join", (data) => {
+        console.log("joined:", data.name);
+        setMessagesWithSenders((messages) =>
+          messages.concat({
+            name: `${data.name} joined the room.`,
+            image: data.image,
+          })
+        );
+      });
 
-    SocketClient.on("left", (data) => {
-      setMessagesWithSenders((messages) =>
-        messages.concat({
-          name: `${data.name} left the room.`,
-          image: data.image,
-        })
-      );
-    });
-  }, []);
+      SocketClient.on("left", (data) => {
+        setMessagesWithSenders((messages) =>
+          messages.concat({
+            name: `${data.name} left the room.`,
+            image: data.image,
+          })
+        );
+      });
+    } catch {
+      history.push('/join');
+    }
+  }, [history]);
 
   return (
     <Grid container direction="row" spacing={2}>

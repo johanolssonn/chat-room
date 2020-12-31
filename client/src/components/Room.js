@@ -22,10 +22,14 @@ const Room = () => {
   const history = useHistory();
 
   useEffect(() => {
-    SocketClient.on("active", (data) => {
-      setActiveChatters(data);
-    });
-  }, [activeChatters]);
+    try {
+      SocketClient.on("active", (data) => {
+        setActiveChatters(data);
+      });
+    } catch {
+      history.push("/join");
+    }
+  }, [activeChatters, history]);
 
   const onDisconnect = () => {
     SocketClient.disconnect();
@@ -47,11 +51,11 @@ const Room = () => {
               <Chat />
             </Grid>
             <Grid item>
-            <Tooltip title="Disconnect">
-              <IconButton color="primary" onClick={() => onDisconnect()}>
-                <CloseOutlinedIcon />
-              </IconButton>
-            </Tooltip>
+              <Tooltip title="Disconnect">
+                <IconButton color="primary" onClick={() => onDisconnect()}>
+                  <CloseOutlinedIcon />
+                </IconButton>
+              </Tooltip>
             </Grid>
           </Grid>
         </Paper>
