@@ -54,13 +54,16 @@ const useStyles = makeStyles({
 
 const ChatActions = () => {
   const [currentMessage, setCurrentMessage] = useState("");
+  const [isSendDisabled, setIsSendDisabled] = useState(true);
   const classes = useStyles();
   const history = useHistory();
 
   const onWriteMessage = (textInput) => {
-    if (textInput.length === 0) {
+    if (textInput.trim().length === 0) {
+      setIsSendDisabled(true);
       SocketClient.stoppedTyping();
     } else {
+      setIsSendDisabled(false);
       SocketClient.typing();
     }
     setCurrentMessage(textInput);
@@ -68,6 +71,7 @@ const ChatActions = () => {
 
   const onSend = () => {
     SocketClient.send(currentMessage);
+    setIsSendDisabled(true);
     setCurrentMessage("");
   };
 
@@ -96,7 +100,7 @@ const ChatActions = () => {
         />
       </Grid>
       <Grid item>
-        <Button variant="contained" color="primary" onClick={() => onSend()}>
+        <Button disabled={isSendDisabled} variant="contained" color="primary" onClick={() => onSend()}>
           <SendIcon />
         </Button>
       </Grid>
