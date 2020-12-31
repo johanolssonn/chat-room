@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 import getenv from "getenv";
 
-const HOST_IP = getenv("REACT_APP_HOST_IP", "");
+const HOST_URL = getenv("REACT_APP_HOST_IP", "");
 
 export default class SocketClient {
   socket;
@@ -11,7 +11,7 @@ export default class SocketClient {
   static connect(name, image) {
     this.username = name;
     this.image = image;
-    this.socket = io(`http://${HOST_IP}:3200`);
+    this.socket = io(HOST_URL);
 
     this.socket.on("connect", () => {
       this.socket.emit("join", {name, image});
