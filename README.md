@@ -1,13 +1,13 @@
-## Chat Room
+# Chat Room
 
 A simple chat room made with Socket.IO and React. 💬
 
-### Screenshots
+## Screenshots
+![](https://raw.githubusercontent.com/johanolssonn/chat-room/main/screenshots/room_screen.png)
+![](https://raw.githubusercontent.com/johanolssonn/chat-room/main/screenshots/join_screen.png)
 
-![](https://github.com/johanolssonn/chat-room/screenshots/join_screen.png)
-![](https://github.com/johanolssonn/chat-room/screenshots/room_screen.png)
 
-### Start the app
+## Start the app
 
 Run `yarn start` in the server directory to run the server.
 
