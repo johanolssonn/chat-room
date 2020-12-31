@@ -69,6 +69,14 @@ const ChatActions = () => {
     setCurrentMessage(textInput);
   };
 
+  const onKeyDown = (event) => {
+    if (event.key === 'Enter' && !isSendDisabled) {
+      event.preventDefault();
+      event.stopPropagation();
+      onSend();
+    }
+  }
+
   const onSend = () => {
     SocketClient.send(currentMessage);
     setIsSendDisabled(true);
@@ -91,6 +99,7 @@ const ChatActions = () => {
       </Grid>
       <Grid item>
         <TextField
+          onKeyDown={onKeyDown}
           placeholder="Message"
           onChange={(event) => onWriteMessage(event.target.value)}
           value={currentMessage}
